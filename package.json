@@ -5,7 +5,10 @@
   "main": "DocumentUpload.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "all": "concurrently \"npm run dev --prefix frontend\" \"npm run start\"", 
+    "install:all": "npm install && npm --prefix frontend install" 
   },
   "keywords": [],
   "author": "",
@@ -17,5 +20,8 @@
     "mongoose": "^8.7.0",
     "openai": "^4.67.3",
     "puppeteer": "^23.5.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
   }
 }
