@@ -85,11 +85,11 @@ function App() {
         <form onSubmit={handleTrainModel}>
           <input
             type="text"
-            placeholder="Enter document URL..."
+            placeholder="Enter URL..."
             value={trainInput}
             onChange={(e) => setTrainInput(e.target.value)}
           />
-          <button type="submit">Train</button>
+          <button type="submit">Feed</button>
         </form>
         {trainMessage && <p className='success-message'>{trainMessage}</p>}
       </div>

@@ -4,6 +4,11 @@ const { createEmbedding } = require('../utils/createEmbedding.js');
 const { connectToMongoDB } = require('../config/MongoDB.js');
 const { runWebScraper } = require('../utils/runWebScraper.js');
 const { hitOpenAiApi } = require('../utils/hitOpenAiApi.js');
+const { processUrlAndSaveDocument } = require('../utils/processUrl.js');
+const { getUrlsFromSitemap } = require('../utils/getUrlsFromSitemap.js');
+
+const fs = require('fs');
+const path = require('path'); 
 
 const router = express.Router();
 
@@ -13,18 +18,16 @@ router.post('/document', async (req, res) => {
   try {
     const { url } = req.body;
 
-    const { text } = await runWebScraper(url);
-    const embedding = await createEmbedding(text);
-
-    const newDoc = new UploadedDocument({
-      description: text,
-      embedding: embedding,
-    });
-    const savedDoc = await newDoc.save();
-    res.status(201).json({
-      message: 'Document uploaded successfully',
-      document: savedDoc,
-    });
+    const result = await processUrlAndSaveDocument(url);
+    if (!result.completed) {
+      res.status(500).json({ error: result.message });
+      return;
+    }else{
+      res.status(201).json({
+        message: result.message,
+        document: result.data,
+      });
+    }
   } catch (err) {
     console.log('err: ', err);
     res.status(500).json({
@@ -60,7 +63,7 @@ router.post('/query-embedding', async (req, res) => {
             },
           },
         ]);
-console.log('documents---------', documents)
+        console.log('documents---------', documents)
         return documents;
       } catch (err) {
         console.error(err);
@@ -85,6 +88,56 @@ console.log('documents---------', documents)
     res.status(500).json({
       error: 'Internal server error',
       message: err.message,
+    });
+  }
+});
+
+router.post('/xml', async (req, res) => {
+  const { url } = req.body;
+
+  try {
+    const urls = await getUrlsFromSitemap(url);
+    const urlCount = urls.length;
+
+    if (urlCount === 0) {
+      return res.status(404).json({ error: 'No URLs found in the sitemap.' });
+    }
+    const successUrls = [];
+    const failedUrls = [];
+
+    for (const url of urls) {
+      const result = await processUrlAndSaveDocument(url);
+      if (result.completed) {
+        successUrls.push(url);
+      } else {
+        failedUrls.push(url);
+      }
+    }
+
+    const dirPath = path.join(__dirname, '../xmlInfo');
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath);
+    }
+
+    const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0]; // Format: YYYY-MM-DDTHH-MM-SS
+    const mainUrl = url;
+
+    const successContent = `Main URL: ${mainUrl}\n\nSuccess URLs:\n${successUrls.join('\n')}`;
+    const failedContent = `Main URL: ${mainUrl}\n\nFailed URLs:\n${failedUrls.join('\n')}`;
+
+    fs.writeFileSync(path.join(dirPath, `success_${timestamp}.txt`), successContent);
+    fs.writeFileSync(path.join(dirPath, `failed_${timestamp}.txt`), failedContent);
+
+    res.status(200).json({
+      message: `Processed ${urlCount} URLs.`,
+      successCount: successUrls.length,
+      failedCount: failedUrls.length,
+    });
+  } catch (error) {
+    console.error('Error processing XML:', error.message);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message,
     });
   }
 });

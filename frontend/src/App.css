@@ -59,7 +59,7 @@ h1 {
 }
 
 .bot {
-  background-color: #f8d7da; /* Light red for bot messages */
+  background-color: #e2e0e1; /* Light red for bot messages */
   align-self: flex-start; /* Align bot messages to the left */
 }
 
@@ -92,13 +92,13 @@ button:hover {
 
 .train-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 350px;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
   background-color: #f9f9f9;
   position: absolute;
-  top: 2rem;
+  top: 3.5rem;
   right: 1rem;
 }
 
