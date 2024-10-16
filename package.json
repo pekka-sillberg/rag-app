@@ -20,6 +20,7 @@
     "express": "^4.21.1",
     "mongoose": "^8.7.0",
     "openai": "^4.67.3",
+    "p-limit": "^6.1.0",
     "puppeteer": "^23.5.1",
     "xml2js": "^0.6.2"
   },

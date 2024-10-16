@@ -81,7 +81,7 @@ function App() {
         </form>
       </div>
         </div>
-      <div className="train-container">
+      {/* <div className="train-container">
         <form onSubmit={handleTrainModel}>
           <input
             type="text"
@@ -92,7 +92,7 @@ function App() {
           <button type="submit">Feed</button>
         </form>
         {trainMessage && <p className='success-message'>{trainMessage}</p>}
-      </div>
+      </div> */}
       </>
   );
 }
