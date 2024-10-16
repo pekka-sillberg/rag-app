@@ -10,12 +10,14 @@ const app = express();
 
 
 app.use(express.json()); 
-app.use(cors({
-  origin: 'https://rag-app-frontend.onrender.com',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Access-Control-Allow-Origin: rag-app-frontend.onrender.com'],
-})); 
-
+const corsOpts = {
+  origin: '*',
+  credentials: true,
+  methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
+  allowedHeaders: ['Content-Type'],
+  exposedHeaders: ['Content-Type']
+};
+app.use(cors(corsOpts));
 
 
 
