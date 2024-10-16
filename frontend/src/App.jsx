@@ -8,6 +8,8 @@ function App() {
   const [trainInput, setTrainInput] = useState('');
   const [trainMessage, setTrainMessage] = useState('');
   const chatEndRef = useRef(null); // Reference to the end of the chat
+  // const api_url = 'http://localhost:5000';
+  const api_url = 'https://rag-app-iivc.onrender.com';
 
   // Function to handle sending messages
   const handleSendMessage = async (e) => {
@@ -18,7 +20,7 @@ function App() {
     setMessages((prev) => [...prev, newMessage]);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/query-embedding', { query: input });
+      const response = await axios.post(api_url+'/api/query-embedding', { query: input });
       const botMessage = { role: 'bot', content: response.data };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
@@ -34,7 +36,7 @@ function App() {
     if (!trainInput) return;
 
     try {
-      await axios.post('http://localhost:5000/api/document', { url: trainInput });
+      await axios.post(api_url+'/api/document', { url: trainInput });
       setTrainMessage('Document uploaded successfully.');
       setTrainInput('');
     } catch (error) {
