@@ -17,7 +17,9 @@ const corsOpts = {
   allowedHeaders: ['Content-Type'],
   exposedHeaders: ['Content-Type']
 };
+
 app.use(cors(corsOpts));
+
 
 
 

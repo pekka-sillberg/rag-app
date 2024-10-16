@@ -1,5 +1,6 @@
 const express = require('express');
 const UploadedDocument = require('../models/DocumentUpload.js');
+const Question = require('../models/Question.js');
 const { createEmbedding } = require('../utils/createEmbedding.js');
 const { connectToMongoDB } = require('../config/MongoDB.js');
 const { runWebScraper } = require('../utils/runWebScraper.js');
@@ -166,6 +167,10 @@ router.post('/query-embedding', async (req, res) => {
 
     const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer:`;
     const answer = await hitOpenAiApi(prompt);
+    //save query and answer in question collection using async await
+    const question = new Question({ question: query, answer: answer });
+    await question.save();
+    
     res.send(answer);
   } catch (err) {
     res.status(500).json({
