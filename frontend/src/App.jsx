@@ -3,7 +3,6 @@ import Sidebar from './components/Sidebar';
 import Chatbox from './components/Chatbox';
 import TopBar from './components/TopBar';
 import Modal from './components/Modal';
-import { FaBars } from 'react-icons/fa';  // Using React Icons
 import './App.css';
 
 function App() {
@@ -12,7 +11,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const api_url =  'https://rag-app-iivc.onrender.com';
+  const api_url = 'https://rag-app-iivc.onrender.com';
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -26,18 +25,19 @@ function App() {
     setShowModal(false);
   };
 
-  return (
+  return (<>
     <div className="main">
-      <button id="menu-toggle" onClick={toggleSidebar} className="hamburger">
-        <FaBars /> {/* Using React Icon */}
-      </button>
-      <Sidebar setInput={setInput} isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} openModal={openModal} />
+      <Sidebar setInput={setInput} isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div id="main-content">
-        <TopBar />
+        <TopBar openModal={openModal} toggleSidebar={toggleSidebar} />
         <Chatbox messages={messages} setMessages={setMessages} api_url={api_url} input={input} setInput={setInput} />
+        <div className="footer right-footer">
+          <p>AskGPT &copy; 2024</p>
+        </div>
       </div>
-      {showModal && <Modal closeModal={closeModal} />}
     </div>
+    {showModal && <Modal closeModal={closeModal} />}
+  </>
   );
 }
 

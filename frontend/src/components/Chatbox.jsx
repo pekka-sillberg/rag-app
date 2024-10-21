@@ -4,8 +4,9 @@ import Input from './Input';
 import axios from 'axios';
 
 function Chatbox({ messages, setMessages, api_url, input, setInput }) {
-  const chatEndRef = useRef(null);
+  const chatEndRef = useRef(null);  // Ref for the scrollable area
 
+  // Scroll to the bottom when messages change
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -33,7 +34,7 @@ function Chatbox({ messages, setMessages, api_url, input, setInput }) {
         {messages.map((msg, index) => (
           <Message key={index} role={msg.role} content={msg.content} />
         ))}
-        <div ref={chatEndRef} />
+        <div ref={chatEndRef} />  {/* This will ensure the chat always scrolls to the bottom */}
       </div>
       <Input input={input} setInput={setInput} handleSendMessage={handleSendMessage} />
     </div>
