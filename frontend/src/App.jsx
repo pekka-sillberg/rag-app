@@ -1,101 +1,43 @@
-import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-import './App.css'; // Import CSS for styling
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar';
+import Chatbox from './components/Chatbox';
+import TopBar from './components/TopBar';
+import Modal from './components/Modal';
+import { FaBars } from 'react-icons/fa';  // Using React Icons
+import './App.css';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [trainInput, setTrainInput] = useState('');
-  const [trainMessage, setTrainMessage] = useState('');
-  const chatEndRef = useRef(null); // Reference to the end of the chat
-  // const api_url = 'http://localhost:5000';
-  const api_url = 'https://rag-app-iivc.onrender.com';
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  // Function to handle sending messages
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!input) return;
+  const api_url =  'https://rag-app-iivc.onrender.com';
 
-    const newMessage = { role: 'user', content: input };
-    setMessages((prev) => [...prev, newMessage]);
-
-    try {
-      const response = await axios.post(api_url+'/api/query-embedding', { query: input });
-      const botMessage = { role: 'bot', content: response.data };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-    } finally {
-      setInput('');
-    }
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Function to handle training the model
-  const handleTrainModel = async (e) => {
-    e.preventDefault();
-    if (!trainInput) return;
-
-    try {
-      await axios.post(api_url+'/api/document', { url: trainInput });
-      setTrainMessage('Document uploaded successfully.');
-      setTrainInput('');
-    } catch (error) {
-      console.error('Error training model:', error);
-      setTrainMessage('Failed to upload document.');
-    }
+  const openModal = () => {
+    setShowModal(true);
   };
 
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    if (trainMessage) {
-      const timer = setTimeout(() => {
-        setTrainMessage(''); 
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [messages,trainMessage]);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
-    <>
-    <div className="app">
-      <div className="chat-container">
-      <h1 >Tuni ChatBot</h1>
-        <div className="chat-box">
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.role}`}>
-              {/* <span>{msg.role === 'user' ? 'You: ' : 'Bot: '}</span> */}
-              {msg.content}
-            </div>
-          ))}
-          {/* Scroll marker */}
-          <div ref={chatEndRef} />
-        </div>
-        <form onSubmit={handleSendMessage}>
-          <input
-            type="text"
-            placeholder="Type your message..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button type="submit">Send</button>
-        </form>
+    <div className="main">
+      <button id="menu-toggle" onClick={toggleSidebar} className="hamburger">
+        <FaBars /> {/* Using React Icon */}
+      </button>
+      <Sidebar setInput={setInput} isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} openModal={openModal} />
+      <div id="main-content">
+        <TopBar />
+        <Chatbox messages={messages} setMessages={setMessages} api_url={api_url} input={input} setInput={setInput} />
       </div>
-        </div>
-      {/* <div className="train-container">
-        <form onSubmit={handleTrainModel}>
-          <input
-            type="text"
-            placeholder="Enter URL..."
-            value={trainInput}
-            onChange={(e) => setTrainInput(e.target.value)}
-          />
-          <button type="submit">Feed</button>
-        </form>
-        {trainMessage && <p className='success-message'>{trainMessage}</p>}
-      </div> */}
-      </>
+      {showModal && <Modal closeModal={closeModal} />}
+    </div>
   );
 }
 
