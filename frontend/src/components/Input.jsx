@@ -10,6 +10,12 @@ function Input({ input, setInput, handleSendMessage }) {
     setInput(''); 
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSend(e);  // Trigger the send action when Enter is pressed
+    }
+  };
+
   return (
     <div className="input-group p-1">
       <input
@@ -18,6 +24,7 @@ function Input({ input, setInput, handleSendMessage }) {
         placeholder="Type your message here..."
         value={input}
         onChange={(e) => setInput(e.target.value)} 
+        onKeyDown={handleKeyPress} 
       />
       <div className="input-group-append">
         <button className="btn btn-primary" onClick={handleSend}>
