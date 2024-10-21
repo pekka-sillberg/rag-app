@@ -45,7 +45,7 @@ body {
 
 #sidebar .logo {
   background-color: #4e008e;
-  padding: 2rem 2rem;
+  padding: 1rem 2rem;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -99,8 +99,9 @@ body {
 }
 
 .right-footer {
-  background-color: white;
-  color: #4e008e;
+  width: 100% !important;
+  background-color: #4e008e;
+  color: #ffffff;
 }
 
 /* Main Content */
@@ -117,7 +118,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2rem;
+  margin: 1rem 2rem 0rem 2rem;
 }
 
 .top-bar a {
@@ -149,7 +150,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   overflow-y: auto;
-  margin: 2rem 3rem 2rem 3rem;
+  margin: 0rem 3rem 1rem 3rem;
 }
 
 .chat-area {

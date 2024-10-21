@@ -13,16 +13,16 @@ function Sidebar({ setInput, isOpen, toggleSidebar, openModal }) {
     <nav id="sidebar" className={isOpen ? 'open' : ''}>
       <div className="top-content">
         <div className="logo">
-          <h2>AskGPT</h2>
+          <h2>FAQ</h2>
           <button onClick={toggleSidebar}>
             <FaTimes/>
           </button>
         </div>
 
-        <div className='faq'>
+        {/* <div className='faq'>
           <h4>FAQ</h4>
           <hr />
-        </div>
+        </div> */}
         <ul>
           <li onClick={handleQuestionClick}>How can I obtain support for studying and well-being at Tampere University?</li>
 
