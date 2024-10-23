@@ -32,7 +32,7 @@ function App() {
         <TopBar openModal={openModal} toggleSidebar={toggleSidebar} />
         <Chatbox messages={messages} setMessages={setMessages} api_url={api_url} input={input} setInput={setInput} />
         <div className=" right-footer">
-          <p>GPT LAB &copy; 2024</p>
+          <p>GPT Lab &copy; 2024</p>
         </div>
       </div>
     </div>
