@@ -13,7 +13,7 @@ function Sidebar({ setInput, isOpen, toggleSidebar, openModal }) {
     <nav id="sidebar" className={isOpen ? 'open' : ''}>
       <div className="top-content">
         <div className="logo">
-          <h2>FAQ</h2>
+          <h2>Guide GPT</h2>
           <button onClick={toggleSidebar}>
             <FaTimes/>
           </button>

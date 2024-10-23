@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Message from './Message';
 import Input from './Input';
 import axios from 'axios';
+import FaqCard from './FaqCard';
 
 function Chatbox({ messages, setMessages, api_url, input, setInput }) {
   const chatEndRef = useRef(null);  // Ref for the scrollable area
@@ -36,6 +37,10 @@ function Chatbox({ messages, setMessages, api_url, input, setInput }) {
   return (
     <div className="chatbox">
       <div className="chat-area">
+        {/* Show FAQ card if no messages exist */}
+        {messages.length === 0 && <FaqCard setInput={setInput} handleSendMessage={handleSendMessage} />}
+        
+        {/* Display messages if they exist */}
         {messages.map((msg, index) => (
           <Message key={index} role={msg.role} content={msg.content} />
         ))}
