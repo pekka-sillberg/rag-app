@@ -49,7 +49,7 @@ const router = express.Router();
 router.get('/feed-url-list', async (req, res) => {
 
   try {
-    const data = await fs.readFileSync('enUnique.txt', 'utf8');
+    const data = await fs.readFileSync('fnUnique.txt', 'utf8');
     const urls = data.split('\n').filter(Boolean);
     const urlCount = urls.length;
 
@@ -68,7 +68,7 @@ router.get('/feed-url-list', async (req, res) => {
       }
     }
 
-    const dirPath = path.join(__dirname, '../txtFileEn');
+    const dirPath = path.join(__dirname, '../txtFileFn');
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath);
     }

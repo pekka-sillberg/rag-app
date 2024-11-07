@@ -9,6 +9,7 @@ async function processUrlAndSaveDocument(url) {
     const embedding = await createEmbedding(text);
 
     const newDoc = new UploadedDocument({
+      url: url,
       description: text,
       embedding: embedding,
     });
