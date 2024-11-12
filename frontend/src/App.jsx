@@ -40,6 +40,7 @@ function App() {
       const botMessage = { role: 'bot', content: response.data };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
+      console.error(error);
       const errorMessage = { role: 'bot', content: 'Sorry, No results found for this query.' };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {

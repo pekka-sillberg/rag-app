@@ -36,11 +36,12 @@ async function embedResponse(query) {
         const highestScoreDoc = similarDocuments.reduce((highest, current) =>
             highest.score > current.score ? highest : current
         );
+        const url = `<a href="${highestScoreDoc.url}" target="_blank">${highestScoreDoc.url}</a>`;
 
         // Generate the prompt
         const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer:`;
 
-        return { prompt };
+        return { prompt,url: url };
     } catch (err) {
         console.error('Error in embedResponse:', err);
         throw err; // Propagate the error to the caller
