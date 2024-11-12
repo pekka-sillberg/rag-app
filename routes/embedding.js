@@ -51,7 +51,7 @@ const router = express.Router();
 router.get('/feed-url-list', async (req, res) => {
 
   try {
-    const data = await fs.readFileSync('fnUnique.txt', 'utf8');
+    const data = await fs.readFileSync('allUnique.txt', 'utf8');
     const urls = data.split('\n').filter(Boolean);
     const urlCount = urls.length;
 
@@ -70,7 +70,7 @@ router.get('/feed-url-list', async (req, res) => {
       }
     }
 
-    const dirPath = path.join(__dirname, '../txtFileFn');
+    const dirPath = path.join(__dirname, '../txtFileAll');
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath);
     }
@@ -130,7 +130,8 @@ router.post('/query-embedding', async (req, res) => {
 
   try {
     // Get the prompt and links HTML (scraped content from browser response)
-    const { prompt, linksHtml } = await browserResponse(query);
+    const { prompt, linksHtml } = await embedResponse(query);
+    // const { prompt, linksHtml } = await browserResponse(query);
 
     if (!prompt) {
       throw new Error('No prompt generated.');
@@ -145,15 +146,15 @@ router.post('/query-embedding', async (req, res) => {
     if (existingQuestion) {
       existingQuestion.answer = answer;
       await existingQuestion.save();
-      return res.send(answer); 
+      return res.send(answer);
     }
     const newQuestion = new Question({ question: query, answer: answer });
     await newQuestion.save();
 
-    return res.send(answer); 
+    return res.send(answer);
 
   } catch (err) {
-    console.error('Error occurred:', err.message); 
+    console.error('Error occurred:', err.message); // Log for debugging
     if (!res.headersSent) {
       res.status(500).json({
         error: 'Internal server error',

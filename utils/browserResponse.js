@@ -2,10 +2,11 @@ const fetchGoogleSearch = require('./fetchGoogleSearch');
 const scrapeContent = require('./scrapeContent');
 
 module.exports = async function browserResponse(query) {
-    console.log('browserResponse');
+
     try {
         // Fetch all URLs from Google search
         const allUrls = await fetchGoogleSearch(query);
+        console.log('allUrls:', allUrls);
         if (!allUrls || allUrls.length === 0) {
             return null; // Return null if no URLs are found
         }
