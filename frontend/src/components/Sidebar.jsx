@@ -40,8 +40,6 @@ function Sidebar({ setInput, isOpen, toggleSidebar, openModal }) {
 
           <li onClick={handleQuestionClick}>What options are available for internships and work life experiences at Tampere University?</li>
 
-          <li onClick={handleQuestionClick}>What support is provided for students seeking L2 Finnish language support?</li>
-
         </ul>
       </div>
       <div className="footer">

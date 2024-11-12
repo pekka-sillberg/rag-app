@@ -11,7 +11,8 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const api_url = 'https://rag-app-iivc.onrender.com';
+  // const api_url = 'https://rag-app-iivc.onrender.com';
+  const api_url = 'http://localhost:5000';
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

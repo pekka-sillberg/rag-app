@@ -23,11 +23,12 @@ function Chatbox({ messages, setMessages, api_url, input, setInput }) {
 
     try {
       const response = await axios.post(`${api_url}/api/query-embedding`, { query: input });
+      console.log('response:', response.data);
       const botMessage = { role: 'bot', content: response.data };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMessage = { role: 'bot', content: 'Sorry, there was an error.' };
+      const errorMessage = { role: 'bot', content: 'Sorry, No results found for this query.' };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setLoading(false); // Set loading to false when the response is received

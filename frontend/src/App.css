@@ -74,12 +74,13 @@ body {
 }
 
 #sidebar ul li {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 1.2rem;
   list-style-type: disc;
   color: rgb(0, 0, 0);
   padding: 10px 0;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 #sidebar ul li:hover {
@@ -185,8 +186,12 @@ body {
   border-radius: 10px;
   width: fit-content;
   color: rgb(0, 0, 0);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   max-width: 80%;
+  text-align: justify;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400 !important;
+
 }
 
 .chat-area .message p {

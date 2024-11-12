@@ -7,9 +7,11 @@ const { runWebScraper } = require('../utils/runWebScraper.js');
 const { hitOpenAiApi } = require('../utils/hitOpenAiApi.js');
 const { processUrlAndSaveDocument } = require('../utils/processUrl.js');
 const { getUrlsFromSitemap } = require('../utils/getUrlsFromSitemap.js');
+const { embedResponse } = require('../utils/embedResponse.js');
 
 const fs = require('fs');
 const path = require('path');
+const browserResponse = require('../utils/browserResponse.js');
 
 const router = express.Router();
 
@@ -97,7 +99,7 @@ router.get('/feed-url-list', async (req, res) => {
 });
 
 
-
+//single url feeding
 router.post('/document', async (req, res) => {
   try {
     const { url } = req.body;
@@ -123,62 +125,44 @@ router.post('/document', async (req, res) => {
 
 // Query embedding for similar documents
 router.post('/query-embedding', async (req, res) => {
+  const { query } = req.body;
+  console.log('query:', query);
+
   try {
-    const { query } = req.body;
-    const embedding = await createEmbedding(query);
+    // Get the prompt and links HTML (scraped content from browser response)
+    const { prompt, linksHtml } = await browserResponse(query);
 
-    async function findSimilarDocuments(embedding) {
-      try {
-        // Query similar documents using Mongoose
-        const documents = await UploadedDocument.aggregate([
-          {
-            $search: {
-              knnBeta: {
-                vector: embedding,
-                path: 'embedding', // The path to the embedding field in the collection
-                k: 5,  // Return top 5 most similar documents
-              },
-            },
-          },
-          {
-            $project: {
-              description: 1,
-              score: { $meta: 'searchScore' },
-            },
-          },
-        ]);
-        // console.log('documents---------', documents)
-        return documents;
-      } catch (err) {
-        console.error(err);
-        throw err;
-      }
+    if (!prompt) {
+      throw new Error('No prompt generated.');
     }
 
-    const similarDocuments = await findSimilarDocuments(embedding);
-    if (similarDocuments.length === 0) {
-      res.status(404).json({ message: 'No similar documents found.' });
-      return;
+    // Generate the answer using the OpenAI API
+    let answer = await hitOpenAiApi(prompt);
+    answer = `${answer}<br><br>For more details, visit :<br>${linksHtml}`;
+
+    const existingQuestion = await Question.findOne({ question: query });
+
+    if (existingQuestion) {
+      existingQuestion.answer = answer;
+      await existingQuestion.save();
+      return res.send(answer); 
     }
+    const newQuestion = new Question({ question: query, answer: answer });
+    await newQuestion.save();
 
-    const highestScoreDoc = similarDocuments.reduce((highest, current) => {
-      return highest.score > current.score ? highest : current;
-    });
+    return res.send(answer); 
 
-    const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer:`;
-    const answer = await hitOpenAiApi(prompt);
-    //save query and answer in question collection using async await
-    const question = new Question({ question: query, answer: answer });
-    await question.save();
-    
-    res.send(answer);
   } catch (err) {
-    res.status(500).json({
-      error: 'Internal server error',
-      message: err.message,
-    });
+    console.error('Error occurred:', err.message); 
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: 'Internal server error',
+        message: err.message,
+      });
+    }
   }
 });
+
 
 router.post('/xml', async (req, res) => {
   const { url } = req.body;
