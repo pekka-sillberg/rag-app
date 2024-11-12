@@ -56,18 +56,20 @@ router.get('/feed-url-list', async (req, res) => {
     const urlCount = urls.length;
 
     if (urlCount === 0) {
-      return res.status(404).json({ error: 'No URLs found in the filr.' });
+      return res.status(404).json({ error: 'No URLs found in the file.' });
     }
     const successUrls = [];
     const failedUrls = [];
-
+    let i = 1;
     for (const url of urls) {
       const result = await processUrlAndSaveDocument(url);
+      console.log(i+'----- '+url);
       if (result.completed) {
         successUrls.push(url);
       } else {
         failedUrls.push(url);
       }
+      i++;
     }
 
     const dirPath = path.join(__dirname, '../txtFileAll');
@@ -126,13 +128,12 @@ router.post('/document', async (req, res) => {
 // Query embedding for similar documents
 router.post('/query-embedding', async (req, res) => {
   const { query } = req.body;
-  console.log('query:', query);
+
 
   try {
     // Get the prompt and links HTML (scraped content from browser response)
     const { prompt, linksHtml } = await embedResponse(query);
     // const { prompt, linksHtml } = await browserResponse(query);
-
     if (!prompt) {
       throw new Error('No prompt generated.');
     }

@@ -1,5 +1,5 @@
 const { createEmbedding } = require('./createEmbedding');
-const { UploadedDocument } = require('../models/DocumentUpload');
+const UploadedDocument = require('../models/DocumentUpload');
 
 async function embedResponse(query) {
     console.log('embedResponse');
@@ -22,6 +22,7 @@ async function embedResponse(query) {
             {
                 $project: {
                     description: 1,
+                    url: 1,
                     score: { $meta: 'searchScore' },
                 },
             },
@@ -31,17 +32,15 @@ async function embedResponse(query) {
             console.log('No similar documents found.');
             return null; // Return `null` if no similar documents are found
         }
-
         // Find the document with the highest score
         const highestScoreDoc = similarDocuments.reduce((highest, current) =>
             highest.score > current.score ? highest : current
         );
-        const url = `<a href="${highestScoreDoc.url}" target="_blank">${highestScoreDoc.url}</a>`;
-
+        const url = `<a href=${highestScoreDoc.url} target="_blank">${highestScoreDoc.url}</a>`;
         // Generate the prompt
-        const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer:`;
+        const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query}, answer in the language of the query. \n\n Answer:`;
 
-        return { prompt,url: url };
+        return { prompt,linksHtml: url };
     } catch (err) {
         console.error('Error in embedResponse:', err);
         throw err; // Propagate the error to the caller
