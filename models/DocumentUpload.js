@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 // Create a new schema for uploaded documents
 const DocumentUploadSchema = new Schema({
   title: String,
+  url: String,
   description: String,
   fileName: String,
   uploadDate: {
