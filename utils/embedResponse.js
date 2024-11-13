@@ -38,7 +38,7 @@ async function embedResponse(query) {
         );
         const url = `<a href=${highestScoreDoc.url} target="_blank">${highestScoreDoc.url}</a>`;
         // Generate the prompt
-        const prompt = `Based on this context: ${highestScoreDoc.description} \n\n Query: ${query}, answer in the language of the query. \n\n Answer:`;
+        const prompt = `Instruction: If the query is in english then answer in english otherwise translate to Finnish. \n\n Based on this context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer:`;
 
         return { prompt,linksHtml: url };
     } catch (err) {
