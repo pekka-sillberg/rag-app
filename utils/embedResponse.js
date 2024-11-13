@@ -38,7 +38,7 @@ async function embedResponse(query) {
         );
         const url = `<a href=${highestScoreDoc.url} target="_blank">${highestScoreDoc.url}</a>`;
 
-        const prompt = `Context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer: \n\n Instruction: make the answer in the same language as the query.`;
+        const prompt = `Context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer (Same language as the query): `;
 
         return { prompt,linksHtml: url };
     } catch (err) {
