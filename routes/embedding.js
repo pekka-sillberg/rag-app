@@ -141,7 +141,7 @@ router.post('/query-embedding', async (req, res) => {
     // Generate the answer using the OpenAI API
     let answer = await hitOpenAiApi(prompt);
     if(answer === 'No results found for this query.'){
-      answer = `No specific details found. Please visit :<br> <a style='word-wrap: break-word;' href="https://www.google.com/search?q=${query} at Tampere University" target="_blank">${query}</a>`;
+      answer = `No specific details found. May be this will help :<br> <a style='word-wrap: break-word;' href="https://www.google.com/search?q=${query} at Tampere University" target="_blank">Link</a>`;
       return res.send(answer);
     }
     answer = `${answer}<br><br>For more details, visit :<br>${linksHtml}`;
