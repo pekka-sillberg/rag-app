@@ -6,6 +6,7 @@ const Schema = mongoose.Schema
 const QuestionSchema = new Schema({
   question: String,
   answer: String,
+  count: Number,
   uploadDate: {
     type: Date,
     default: Date.now,

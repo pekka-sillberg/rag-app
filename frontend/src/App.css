@@ -40,6 +40,13 @@ body {
   display: none;
   /* For Chrome, Safari, and Edge */
 }
+
+#sidebar h3{
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0;
+  color: #4e008e;
+}
 #sidebar.open {
   left: 0;
 }
@@ -318,6 +325,54 @@ body {
 .bg-gray {
   background-color: #f1f1f1;
 }
+
+/* Overlay to cover the entire screen and apply blur effect */
+.cookie-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Centered modal container */
+.cookie-modal {
+  background: #fefefe;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Close button styling */
+.cookie-modal-close {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #ff4b4b;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cookie-modal-close:hover {
+  background-color: #e03e3e;
+}
+
 @keyframes dot-typing {
   0% {
     transform: scale(0.8);
