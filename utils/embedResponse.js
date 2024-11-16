@@ -37,10 +37,8 @@ async function embedResponse(query) {
             highest.score > current.score ? highest : current
         );
         const url = `<a style='word-wrap: break-word;' href=${highestScoreDoc.url} target="_blank">${highestScoreDoc.url}</a>`;
-
         // const prompt = `Context: ${highestScoreDoc.description} \n\n Query: ${query} \n\n Answer (Same language as the query): `;
-        const prompt = `Context: ${highestScoreDoc.description} \n\n Query: ${query}.if the question is in english then answer in english otherwise in finnish.And if you don't know the answer then say 'No results found for this query.' \n\n Answer: `;
-
+        const prompt = `Context: ${highestScoreDoc.description} \n\n Query: \n\n Note:if you don't know the answer then say 'No results found for this query.' \n\n ${query} \n\n  Answer:`;
         return { prompt,linksHtml: url };
     } catch (err) {
         console.error('Error in embedResponse:', err);
