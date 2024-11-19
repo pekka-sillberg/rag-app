@@ -30,8 +30,17 @@ router.post('/query-embedding', async (req, res) => {
 
     // Generate the answer using the OpenAI API
     let answer = await hitOpenAiApi(prompt);
-    if(answer === 'No results found for this query.'){
-      answer = `No specific details found. May be this will help : <a style='word-wrap: break-word;' href="https://www.google.com/search?q=${query} at Tampere University" target="_blank">Link</a>`;
+    if (answer === 'No results found for this query.') {
+      const matchingQuestion = await Question.findOne({ where: { question: query } });
+
+      if (matchingQuestion) {
+        matchingQuestion.count += 1;
+        await matchingQuestion.save();
+        answer = matchingQuestion.answer;
+      } else {
+
+        answer = `No specific details found. May be this will help : <a style='word-wrap: break-word;' href="https://www.google.com/search?q=${query} at Tampere University" target="_blank">Link</a>`;
+      }
       return res.send(answer);
     }
     answer = `${answer}<br><br>For more details, visit :<br>${linksHtml}`;
@@ -41,12 +50,12 @@ router.post('/query-embedding', async (req, res) => {
       existingQuestion.answer = answer;
       existingQuestion.count += 1;
       const upQuestion = await existingQuestion.save();
-      return res.send(answer); 
+      return res.send(answer);
     }
     const newQuestion = new Question({ question: query, answer: answer, count: 1 });
     await newQuestion.save();
 
-    return res.send(answer); 
+    return res.send(answer);
 
 
   } catch (err) {
