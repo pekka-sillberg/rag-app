@@ -2,7 +2,7 @@ const { createEmbedding } = require('./createEmbedding');
 const UploadedDocument = require('../models/DocumentUpload');
 
 async function embedResponse(query) {
-    console.log('embedResponse');
+    // console.log('embedResponse');
 
     try {
         // Create the embedding for the query

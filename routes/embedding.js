@@ -30,18 +30,13 @@ router.post('/query-embedding', async (req, res) => {
     // Generate the answer using the OpenAI API
     let answer = await hitOpenAiApi(prompt);
     if (answer === 'No results found for this query.') {
-      console.log('no ai response');
-      const matchingQuestion = await Question.findOne({ where: { question: query } });
+      const matchingQuestion = await Question.findOne({ question: query });
       if (matchingQuestion) {
-        console.log('match found');
 
         matchingQuestion.count += 1;
         await matchingQuestion.save();
         answer = matchingQuestion.answer;
-        console.log('answer:', answer);
       } else {
-        console.log('match not found');
-
         answer = `No specific details found. May be this will help : <a style='word-wrap: break-word;' href="https://www.google.com/search?q=${query} at Tampere University" target="_blank">Link</a>`;
       }
       return res.send(answer);
@@ -56,7 +51,8 @@ router.post('/query-embedding', async (req, res) => {
       return res.send(answer);
     }
     const newQuestion = new Question({ question: query, answer: answer, count: 1 });
-    await newQuestion.save();
+    const newQ = await newQuestion.save();
+
 
     return res.send(answer);
 
