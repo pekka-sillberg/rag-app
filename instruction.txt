@@ -1,0 +1,80 @@
+Project Setup and Deployment Instructions
+
+This document contains step-by-step instructions to set up, install dependencies, and run the project.
+
+---
+
+1. Extract the Zip File
+   - Unzip the project zip file to your desired directory.
+   - Navigate to the root directory of the extracted project.
+
+---
+
+2. Install Dependencies
+   This project has both backend and frontend dependencies.
+
+   Install Both at Once:
+   - Run the following command in the root directory:
+     npm run install:all
+   - This will:
+     - Install backend dependencies.
+     - Navigate to the `frontend` folder and install its dependencies.
+
+   Install Manually (Optional):
+   - Backend:
+     - Run:
+       npm install
+   - Frontend:
+     - Navigate to the `frontend` directory:
+       cd frontend
+       npm install
+
+---
+
+3. Build and Deploy the Project
+
+   Run the Deploy Command:
+   - To build the frontend and run the backend server:
+       npm run deploy
+   - This will:
+     - Build the production-ready frontend files (in `frontend/build`).
+     - Start the backend server using `app.js`.
+
+   Backend:
+   - Runs on port `5000`, as specified in the `.env` file using the `PORT` variable.
+   - Serves the `frontend/dist` folder as static files using Express.
+
+   Run Frontend and Backend Separately (For Development):
+   - Run the backend server:
+       npm start
+   - Run the frontend development server:
+       cd frontend
+       npm start
+     - The frontend development server runs on port `3000` by default.
+
+---
+
+4. Access the Application
+
+   - For the combined backend and frontend:
+     - Access the application at http://localhost:5000.
+   - For separate development environments:
+     - Backend: Access the API via http://localhost:5000.
+     - Frontend: Access the UI via http://localhost:3000.
+
+---
+
+5. Notes
+   - Ensure Node.js and npm are installed on your system.
+     Verify with:
+       node -v
+       npm -v
+   - If a file or URL fails during processing, check the logs in:
+     - `success-YYYY-MM-DD.txt`
+     - `failed-YYYY-MM-DD.txt`
+   - If the project relies on external APIs (like OpenAI), ensure the `.env` file contains the required API keys:
+       OPEN_API_KEY=your-api-key
+
+---
+
+Thank you for using this project. If you have any questions, please reach out!
