@@ -15,14 +15,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [faqs, setFaqs] = useState([]); // State to store FAQ data
 
-  // const api_url = 'http://localhost:5000';
-  const api_url = 'https://rag-app-iivc.onrender.com';
+  const api_url = 'http://localhost:5000';
+  // const api_url = 'https://rag-app-iivc.onrender.com';
 
   useEffect(() => {
     // Fetch FAQs when the component mounts
     const fetchFaqs = async () => {
       try {
-        const response = await axios.get(`${api_url}/api/faqs/top`);
+        const response = await axios.get(`${api_url}/api/top-questions`);
         setFaqs(response.data);
       } catch (error) {
         console.error('Error fetching FAQs:', error);
@@ -52,8 +52,8 @@ function App() {
     setMessages((prev) => [...prev, newMessage]);
 
     try {
-      const response = await axios.post(`${api_url}/api/query-embedding`, { query: input });
-      const botMessage = { role: 'bot', content: response.data };
+      const response = await axios.post(`${api_url}/api/query`, { query: input });
+      const botMessage = { role: 'bot', content: response.data.answer };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error(error);
