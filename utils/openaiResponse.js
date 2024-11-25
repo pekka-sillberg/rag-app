@@ -5,13 +5,14 @@ require('dotenv').config()
 
 const openai = new OpenAI({
     apiKey: process.env.OPEN_API_KEY,
+    baseURL: process.env.OPEN_BASE_URL,
 });
 
 async function openaiResponse(prompt) {
     
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: process.env.MODEL_CHAT,
             messages: [{ role: "user", content: prompt }], // Pass the prompt as a message
             max_tokens: 150,
         });

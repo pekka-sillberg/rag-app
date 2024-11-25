@@ -18,6 +18,7 @@ app.use(cors(corsOpts));
 
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
+const host = process.env.HOST || "127.0.0.1";
 const port = process.env.PORT || 3000;
 app.use("/api", embeddingRoutes);
 
@@ -36,6 +37,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+var server = app.listen(port, host, (err) => {
+  if (err) {
+    console.log("Error in server setup", err);
+  } else {
+    console.log(`Server running at http://${host}:${port}`);
+  }
 });
