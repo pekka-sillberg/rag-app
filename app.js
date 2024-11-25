@@ -44,3 +44,24 @@ var server = app.listen(port, host, (err) => {
     console.log(`Server running at http://${host}:${port}`);
   }
 });
+
+// Process SIGNAL handlers for graceful stopping
+process.on("SIGINT", closeHandler);
+process.on("SIGTERM", closeHandler);
+
+// Call on above mentioned signals
+function closeHandler(event) {
+  console.log(`Closing server by event ${event}`);
+  server?.close(closeCallback);
+}
+
+// Logger callback for the express server
+function closeCallback(err){
+  if (!err) {
+    console.log(`Server successfully closed.`);
+    process.exit(0);
+  } else {
+    console.log("an error happened", err);
+    process.exit(2);
+  }
+}
