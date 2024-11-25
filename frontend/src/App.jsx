@@ -15,7 +15,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [faqs, setFaqs] = useState([]); // State to store FAQ data
 
-  const api_url = 'http://localhost:5000';
+  const api_url = ".";
   // const api_url = 'https://rag-app-iivc.onrender.com';
 
   useEffect(() => {
